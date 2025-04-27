@@ -6,9 +6,9 @@ repeated letters in a given input string. It supports single input or batch proc
 from a file, with configurable animation speed and memory profiling.
 
 Example:
-    $ python duplicate_letter_fest.py
-    $ python duplicate_letter_fest.py --fast --mem-profile
-    $ python duplicate_letter_fest.py --input-file names.txt
+    $ python main.py
+    $ python main.py --fast --mem-profile
+    $ python main.py --input-file names.txt
 
 ![CI](https://github.com/yourusername/duplicate-letter-fest/actions/workflows/ci.yml/badge.svg)
 """
@@ -20,9 +20,13 @@ import random
 import tracemalloc
 import curses
 import pytest
+import _curses
+
+# Type alias for curses window
+CursesWindow = _curses.window
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     """
     Parse command line arguments for the application.
     
@@ -121,7 +125,7 @@ BALLOON_ART = [
 ]
 
 
-def _curses_balloons(stdscr, duplicates: list[str], float_time: float, height: int, summary_lines: list[str]):
+def _curses_balloons(stdscr: CursesWindow, duplicates: list[str], float_time: float, height: int, summary_lines: list[str]) -> None:
     """
     Create animated balloons using the curses library.
     
@@ -259,7 +263,7 @@ def process_input(input_text: str, float_time: float, height: int, animate: bool
         print("\n---\n")
 
 
-def main():
+def main() -> None:
     """
     Main entry point for the Duplicate Letter Fest application.
     
@@ -312,7 +316,7 @@ if __name__ == "__main__":
     ("a b a", ["a"]),
     ("AaAa", ["A", "a"]),
 ])
-def test_highlight_repeats_param(input_text, expected):
+def test_highlight_repeats_param(input_text: str, expected: list[str]) -> None:
     """
     Test the highlight_repeats_in_name function with various inputs.
     
@@ -323,7 +327,7 @@ def test_highlight_repeats_param(input_text, expected):
     assert highlight_repeats_in_name(input_text) == expected
 
 
-def test_type_error():
+def test_type_error() -> None:
     """
     Test that highlight_repeats_in_name raises TypeError for non-string inputs.
     """
