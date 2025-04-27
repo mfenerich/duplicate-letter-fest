@@ -1,5 +1,3 @@
-import pytest
-
 from src.core.result import DuplicateResult
 
 

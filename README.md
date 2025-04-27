@@ -225,7 +225,6 @@ src/
 │   └── memory_profiler.py   # Memory profiling functionality
 └── ui/                      # User interface
     ├── __init__.py
-    ├── summary.py           # Visualization interfaces for the Duplicate Letter Fest application.
     ├── visualizer.py        # Visualization interface
     └── balloon_viz.py       # Balloon visualization implementations
 ```

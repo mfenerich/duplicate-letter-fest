@@ -1,5 +1,3 @@
-import pytest
-
 from src.profiling.memory_profiler import MemoryProfiler, MemoryStats
 
 
