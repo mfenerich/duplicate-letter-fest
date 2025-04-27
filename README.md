@@ -122,6 +122,86 @@ python -m src.main --fast --height 20 --mem-profile -v --input-file inputs.txt
 
 ---
 
+## SOLID Architecture
+
+The project implements SOLID principles for better maintainability, testability, and extensibility:
+
+### Single Responsibility Principle (SRP)
+
+Each class and module has a single, well-defined responsibility:
+
+- **DuplicateFinder**: Focuses solely on finding duplicate characters
+- **Visualizer**: Handles only the visualization of results
+- **MemoryProfiler**: Manages memory tracking functionality
+- **CLI Parser**: Handles command-line argument parsing
+- **Result Class**: Encapsulates analysis results
+
+### Open/Closed Principle (OCP)
+
+Components are open for extension but closed for modification:
+
+- New visualization methods can be added by implementing the `Visualizer` interface
+- Different duplicate detection algorithms can extend the `DuplicateFinder` class
+- Core functionality doesn't need to change to accommodate new features
+
+### Liskov Substitution Principle (LSP)
+
+All implementations can be substituted for their abstract base classes:
+
+- `BalloonVisualizer` and `NoAnimationVisualizer` can be used interchangeably
+- The high-level code doesn't need to know which specific implementation is being used
+
+### Interface Segregation Principle (ISP)
+
+Interfaces are focused and minimal:
+
+- `Visualizer` interface has only what visualizers need
+- `DuplicateFinder` interface focuses only on duplicate finding functionality
+- No client is forced to depend on methods it doesn't use
+
+### Dependency Inversion Principle (DIP)
+
+High-level modules depend on abstractions, not concrete implementations:
+
+- `process_input()` accepts interfaces rather than concrete classes
+- Dependencies are injected rather than created internally
+- Components are loosely coupled through interfaces
+
+### Project Structure
+
+The refactored code is organized into logical modules:
+
+```
+src/
+├── __init__.py
+├── main.py                  # Entry point
+├── cli/                     # Command-line interface
+│   ├── __init__.py
+│   └── parser.py            # Command-line argument parsing
+├── core/                    # Core functionality
+│   ├── __init__.py
+│   ├── duplicate_finder.py  # Duplicate detection logic
+│   └── result.py            # Result data structures
+├── profiling/               # Performance measurement
+│   ├── __init__.py
+│   └── memory_profiler.py   # Memory profiling functionality
+└── ui/                      # User interface
+    ├── __init__.py
+    ├── summary.py           # Visualization interfaces for the Duplicate Letter Fest application.
+    ├── visualizer.py        # Visualization interface
+    └── balloon_viz.py       # Balloon visualization implementations
+```
+
+### Benefits of This Architecture
+
+1. **Improved testability**: Each component can be tested in isolation
+2. **Better maintainability**: Smaller, focused classes are easier to understand and modify
+3. **Enhanced extensibility**: New features can be added with minimal changes to existing code
+4. **Reduced coupling**: Components interact through abstractions, not direct dependencies
+5. **Clear separation of concerns**: Each part of the system has a well-defined responsibility
+
+---
+
 ## Type Safety
 
 This project implements robust type safety using Python's type annotation system:
@@ -137,27 +217,6 @@ To run type checking locally:
 ```bash
 mypy src
 ```
-
-If you encounter a "duplicate module" error with mypy, use one of these solutions:
-
-1. **Quick fix**: Add `--exclude=stubs` to mypy arguments in your pre-commit configuration:
-   ```yaml
-   -   repo: https://github.com/pre-commit/mirrors-mypy
-       rev: v1.15.0
-       hooks:
-       -   id: mypy
-           additional_dependencies: [types-requests]
-           args: [--explicit-package-bases, --exclude=stubs]
-   ```
-
-2. **Alternative approach**: Remove the `stubs/main.pyi` file and rely on the inline type annotations in `main.py`. Modern Python typing no longer requires separate `.pyi` stubs when code has thorough inline annotations.
-
-Type annotations provide several benefits:
-- Catch type errors before runtime
-- Improved IDE integration with better autocompletion
-- Self-documenting code with clear interfaces
-- Enhanced maintainability for future contributors
-
 ---
 
 ## Code Quality Tools
