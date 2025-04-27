@@ -42,6 +42,46 @@ A playful CLI tool that detects repeated characters in strings and presents them
 
 ---
 
+## Docker
+
+You can run Duplicate Letter Fest in a Docker container without installing Python or any dependencies locally.
+
+### Building the Docker Image
+
+```bash
+docker build -t duplicate-letter-fest .
+```
+
+### Running with Docker
+
+#### Interactive Mode
+
+```bash
+docker run -it duplicate-letter-fest
+```
+
+#### Batch Mode (File Input)
+
+```bash
+docker run -it -v "$(pwd)/inputs.txt:/app/inputs.txt:ro" duplicate-letter-fest --input-file inputs.txt
+```
+
+#### Using Flags with Docker
+
+All command-line flags work with Docker:
+
+```bash
+docker run -it duplicate-letter-fest --fast --height 20 --mem-profile --no-animation
+```
+
+#### Notes on Terminal Support in Docker
+
+- The `-it` flags are essential for interactive mode and animations
+- If you experience issues with animations in Docker, try the `--no-animation` flag
+- For best results, ensure your terminal window is sufficiently large
+
+---
+
 ## Usage
 
 ### Interactive Mode
