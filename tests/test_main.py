@@ -1,6 +1,6 @@
 import pytest
 
-from main import highlight_repeats_in_name
+from src.main import highlight_repeats_in_name
 
 
 @pytest.mark.parametrize(

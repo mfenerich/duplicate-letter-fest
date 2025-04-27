@@ -30,6 +30,5 @@ skip_gitignore = true
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = "--verbose"
-testpaths = ["."]
+testpaths = ["tests"]
 python_files = "test_*.py"
-
