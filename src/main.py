@@ -58,10 +58,10 @@ def process_input(
         visualizer: Component to visualize the results
         profiler: Optional component to profile memory usage
     """
-    # Skip long text animation
-    if len(input_text) > 30 and isinstance(visualizer, BalloonVisualizer):
+    # Skip long text animation if needed
+    should_skip_animation = len(input_text) > 30 and isinstance(visualizer, BalloonVisualizer)
+    if should_skip_animation:
         print(f"Warning: input length {len(input_text)} > 30, skipping balloon animation.")
-        visualizer = NoAnimationVisualizer()
 
     # Start profiling if requested
     if profiler:
@@ -83,8 +83,11 @@ def process_input(
         input_text=input_text, duplicates=duplicates, duration=duration, memory_stats=memory_stats
     )
 
-    # Visualize the results
-    visualizer.visualize(result)
+    # Visualize the results with appropriate visualizer
+    if should_skip_animation:
+        NoAnimationVisualizer().visualize(result)
+    else:
+        visualizer.visualize(result)
 
 
 def main() -> None:
@@ -106,6 +109,9 @@ def main() -> None:
     finder = HistogramDuplicateFinder()
 
     float_time = 0.05 if args.fast else 0.1
+
+    # Explicitly type the visualizer variable to the interface type
+    visualizer: Visualizer
     if args.no_animation:
         visualizer = NoAnimationVisualizer()
     else:

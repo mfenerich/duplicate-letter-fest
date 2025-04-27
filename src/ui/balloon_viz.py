@@ -8,7 +8,7 @@ as animated balloons in the terminal or as a simple text summary.
 import curses
 import random
 import time
-from typing import List
+from typing import List, Tuple
 
 from src.core.result import DuplicateResult
 from src.ui.visualizer import Visualizer
@@ -79,6 +79,14 @@ class BalloonVisualizer(Visualizer):
             duplicates: List of characters to display in balloons.
             summary_lines: List of strings to display as summary after animation.
         """
+        self._setup_curses(stdscr)
+        positions = self._calculate_balloon_positions(stdscr, duplicates, summary_lines)
+        self._animate_balloons(stdscr, positions)
+        self._display_final_screen(stdscr, positions, summary_lines)
+        self._wait_for_key(stdscr)
+
+    def _setup_curses(self, stdscr: CursesWindow) -> None:
+        """Set up the curses environment for animation."""
         curses.curs_set(0)
         stdscr.nodelay(True)
         curses.start_color()
@@ -97,12 +105,15 @@ class BalloonVisualizer(Visualizer):
         ):
             curses.init_pair(i, color, -1)
 
+    def _calculate_balloon_positions(
+        self, stdscr: CursesWindow, duplicates: List[str], summary_lines: List[str]
+    ) -> List[Tuple[int, int, str, int]]:
+        """Calculate the starting positions for each balloon."""
         max_y, max_x = stdscr.getmaxyx()
         num = len(duplicates)
         balloon_width = len(BALLOON_ART[0])
         slot_width = max_x // num if num else max_x
 
-        # Calculate balloon positions
         positions = []
         y_start = max_y - len(BALLOON_ART) - len(summary_lines) - 2
         for idx, ch in enumerate(duplicates):
@@ -111,7 +122,13 @@ class BalloonVisualizer(Visualizer):
             x = random.randint(min_x, max_x_slot) if max_x_slot > min_x else min_x
             positions.append((y_start, x, ch, idx))
 
-        # Rising animation
+        return positions
+
+    def _animate_balloons(
+        self, stdscr: CursesWindow, positions: List[Tuple[int, int, str, int]]
+    ) -> None:
+        """Animate the balloons rising to their final positions."""
+        max_y, max_x = stdscr.getmaxyx()
         for step in range(self.height):
             stdscr.erase()
             for y0, x0, ch, idx in positions:
@@ -123,7 +140,14 @@ class BalloonVisualizer(Visualizer):
             stdscr.refresh()
             time.sleep(self.float_time)
 
-        # Static display with summary
+    def _display_final_screen(
+        self,
+        stdscr: CursesWindow,
+        positions: List[Tuple[int, int, str, int]],
+        summary_lines: List[str],
+    ) -> None:
+        """Display the final screen with static balloons and summary."""
+        max_y, max_x = stdscr.getmaxyx()
         stdscr.erase()
 
         # Draw balloons at final positions
@@ -134,11 +158,13 @@ class BalloonVisualizer(Visualizer):
                     stdscr.addstr(y0 + dy, x0, line.format(ch), color_pair)
 
         # Draw summary below balloons
+        y_start = max_y - len(BALLOON_ART) - len(summary_lines) - 2
         for i, line in enumerate(summary_lines):
             stdscr.addstr(y_start + len(BALLOON_ART) + i + 1, 0, line)
         stdscr.refresh()
 
-        # Wait for any key before ending
+    def _wait_for_key(self, stdscr: CursesWindow) -> None:
+        """Wait for any key press before ending the animation."""
         stdscr.nodelay(False)
         stdscr.getkey()
 

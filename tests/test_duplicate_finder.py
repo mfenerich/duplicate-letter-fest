@@ -30,4 +30,5 @@ def test_type_error() -> None:
     """
     finder = HistogramDuplicateFinder()
     with pytest.raises(TypeError):
-        finder.find_duplicates(123)
+        # We're intentionally passing an invalid type to test error handling
+        finder.find_duplicates(123)  # type: ignore[arg-type]
