@@ -1,6 +1,7 @@
 # Duplicate Letter Fest
 
 ![CI](https://github.com/mfenerich/duplicate-letter-fest/actions/workflows/ci.yml/badge.svg)
+![Type Check](https://github.com/mfenerich/duplicate-letter-fest/actions/workflows/type-check.yml/badge.svg)
 
 A playful CLI tool that detects repeated characters in strings and presents them with fun, flicker‑free ASCII balloon animations.
 
@@ -14,6 +15,7 @@ A playful CLI tool that detects repeated characters in strings and presents them
 - **Memory Profiling**: Use `--mem-profile` to display current and peak memory usage of the duplicate‑finding algorithm.
 - **Non‑Overlapping Layout**: Balloons are evenly spaced to avoid overlap.
 - **In‑Window Summary**: After animation, a summary of input, duplicates, time, and memory stats appears in the same terminal buffer.
+- **Static Type Checking**: Comprehensive type annotations with mypy validation.
 - **Automated Testing & CI**: Parameterized Pytest suite and GitHub Actions CI integration.
 
 ---
@@ -22,7 +24,7 @@ A playful CLI tool that detects repeated characters in strings and presents them
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/yourusername/duplicate-letter-fest.git
+   git clone https://github.com/mfenerich/duplicate-letter-fest.git
    cd duplicate-letter-fest
    ```
 2. (Optional) Create a virtual environment:
@@ -30,7 +32,7 @@ A playful CLI tool that detects repeated characters in strings and presents them
    python3 -m venv venv
    source venv/bin/activate
    ```
-3. Install dependencies (if any):
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
@@ -98,13 +100,35 @@ python main.py --fast --height 20 --mem-profile -v --input-file inputs.txt
    - **Time**: `time.perf_counter()` around the core algorithm.
    - **Memory**: `tracemalloc` to capture current and peak usage if requested.
 4. **Terminal Animation**:
-   - Built with Python’s `curses` library for flicker‑free rendering.
+   - Built with Python's `curses` library for flicker‑free rendering.
    - Evenly divides terminal width into slots to prevent balloon overlap.
    - Balloons rise over specified height and speed.
    - After animation, renders a summary in the same window.
-5. **Testing & CI**:
+5. **Type Safety**:
+   - Comprehensive type annotations throughout the codebase.
+   - Separate type stubs file (`main.pyi`) for enhanced IDE integration.
+   - Strict mypy configuration enforcing type checking.
+6. **Testing & CI**:
    - Parameterized tests with `pytest.mark.parametrize` for coverage.
-   - CI badge for GitHub Actions ensures tests run on every push.
+   - CI pipeline includes both test execution and type checking.
+
+---
+
+## Type Safety
+
+This project implements robust type safety using Python's type annotation system:
+
+- **Full Type Annotations**: All functions and methods are properly typed
+- **Type Stubs File**: Separate `.pyi` file provides enhanced type information
+- **Custom Type Aliases**: Specialized types like `CursesWindow` improve readability
+- **Mypy Configuration**: Strict settings in `mypy.ini` enforce type safety
+- **CI Integration**: Continuous type checking in GitHub Actions
+
+To run type checking locally:
+
+```bash
+mypy main.py
+```
 
 ---
 
@@ -115,6 +139,15 @@ pytest
 ```
 
 Make sure to activate your virtual environment before running tests.
+
+---
+
+## Requirements
+
+- Python 3.9+
+- Dependencies (see `requirements.txt`):
+  - pytest
+  - mypy
 
 ---
 
