@@ -1,8 +1,5 @@
 # Duplicate Letter Fest
 
-![CI](https://github.com/mfenerich/duplicate-letter-fest/actions/workflows/ci.yml/badge.svg)
-![Code Quality](https://github.com/mfenerich/duplicate-letter-fest/actions/workflows/code-quality.yml/badge.svg)
-
 A playful CLI tool that detects repeated characters in strings and presents them with fun, flicker‑free ASCII balloon animations.
 
 ---
@@ -52,12 +49,12 @@ A playful CLI tool that detects repeated characters in strings and presents them
 Run without arguments for a prompt:
 
 ```bash
-python main.py
+python -m src.main
 ```
 
 **Example:**
 ```
-$ python main.py
+$ python -m src.main
 🎈 Welcome to the Duplicate Letter Fest! 🎈
 Type any word or name, and watch repeated letters pop up as balloons if enabled.
 Enter text: balloon
@@ -76,7 +73,7 @@ supercalifragilisticexpialidocious
 
 Run:
 ```bash
-python main.py --input-file inputs.txt
+python -m src.main --input-file inputs.txt
 ```
 
 Outputs each result (animation or summary) in sequence.
@@ -93,7 +90,7 @@ Outputs each result (animation or summary) in sequence.
 
 **Combining Flags Example:**
 ```bash
-python main.py --fast --height 20 --mem-profile -v --input-file inputs.txt
+python -m src.main --fast --height 20 --mem-profile -v --input-file inputs.txt
 ```
 
 ---
@@ -138,7 +135,7 @@ This project implements robust type safety using Python's type annotation system
 To run type checking locally:
 
 ```bash
-mypy main.py
+mypy src
 ```
 
 If you encounter a "duplicate module" error with mypy, use one of these solutions:
