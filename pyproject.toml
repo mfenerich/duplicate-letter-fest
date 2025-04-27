@@ -32,3 +32,4 @@ minversion = "6.0"
 addopts = "--verbose"
 testpaths = ["."]
 python_files = "test_*.py"
+
