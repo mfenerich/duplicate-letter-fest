@@ -8,6 +8,7 @@ import logging
 import time
 import os
 import random
+import tracemalloc
 import pytest
 
 
@@ -35,6 +36,11 @@ def parse_args():
         "--no-animation",
         action="store_true",
         help="Skip balloon animation and only show summary"
+    )
+    parser.add_argument(
+        "--mem-profile",
+        action="store_true",
+        help="Show memory usage statistics for duplicate-finding algorithm"
     )
     return parser.parse_args()
 
@@ -100,9 +106,10 @@ def _print_balloons(duplicates: list[str], float_time: float = 0.1, height: int 
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def run_interactive(float_time: float, height: int, animate: bool) -> None:
+def run_interactive(float_time: float, height: int, animate: bool, mem_profile: bool) -> None:
     """
-    CLI entry point: asks for input, optionally runs balloon animation, then displays summary.
+    CLI entry point: asks for input, optionally runs balloon animation,
+    measures and displays memory and time stats, then summary.
     """
     print("🎈 Welcome to the Duplicate Letter Fest! 🎈")
     print("Type any word or name, and watch repeated letters pop up as balloons if enabled.")
@@ -112,21 +119,34 @@ def run_interactive(float_time: float, height: int, animate: bool) -> None:
         print("No input provided. Exiting.")
         return
 
+    # start memory profiling if requested
+    if mem_profile:
+        tracemalloc.start()
+
     # measure processing time (excluding animation)
     start = time.perf_counter()
     duplicates = highlight_repeats_in_name(user_input)
     duration = time.perf_counter() - start
 
+    # measure memory stats
+    if mem_profile:
+        current, peak = tracemalloc.get_traced_memory()
+        tracemalloc.stop()
+
+    # run animation if enabled
     if animate and duplicates:
         _print_balloons(duplicates, float_time, height)
     elif not duplicates:
         print("\nNo duplicate letters found! Nice and unique.")
 
-    # always show summary
+    # display summary
     print("\nSummary:")
-    print(f"  Input text           : '{user_input}'")
-    print(f"  Duplicates           : {', '.join(duplicates) if duplicates else 'None'}")
-    print(f"  Algorithm time       : {duration:.6f} seconds")
+    print(f"  Input text            : '{user_input}'")
+    print(f"  Duplicates            : {', '.join(duplicates) if duplicates else 'None'}")
+    print(f"  Algorithm time        : {duration:.6f} seconds")
+    if mem_profile:
+        print(f"  Memory current usage  : {current / 1024:.2f} KiB")
+        print(f"  Memory peak usage     : {peak / 1024:.2f} KiB")
 
 
 def main():
@@ -134,11 +154,13 @@ def main():
     log_level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(level=log_level, format='%(message)s')
 
+    # determine animation speed
     float_time = 0.05 if args.fast else 0.1
     run_interactive(
         float_time=float_time,
         height=args.height,
-        animate=not args.no_animation
+        animate=not args.no_animation,
+        mem_profile=args.mem_profile
     )
 
 if __name__ == "__main__":
@@ -154,6 +176,7 @@ if __name__ == "__main__":
     ("a b a", ["a"]),
     ("AaAa", ["A", "a"]),
 ])
+
 def test_highlight_repeats_param(input_text, expected):
     assert highlight_repeats_in_name(input_text) == expected
 
