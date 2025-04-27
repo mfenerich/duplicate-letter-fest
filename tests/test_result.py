@@ -6,12 +6,9 @@ from src.core.result import DuplicateResult
 def test_result_creation() -> None:
     """Test that DuplicateResult is created correctly with the expected attributes."""
     result = DuplicateResult(
-        input_text="hello",
-        duplicates=["l"],
-        duration=0.0001,
-        memory_stats=(1000, 2000)
+        input_text="hello", duplicates=["l"], duration=0.0001, memory_stats=(1000, 2000)
     )
-    
+
     assert result.input_text == "hello"
     assert result.duplicates == ["l"]
     assert result.duration == 0.0001
@@ -25,7 +22,7 @@ def test_summary_lines_without_memory() -> None:
         duplicates=["a", "n"],
         duration=0.0002,
     )
-    
+
     lines = result.get_summary_lines()
     assert len(lines) == 4  # Should have 4 lines without memory stats
     assert "Input text" in lines[0]
@@ -41,12 +38,9 @@ def test_summary_lines_without_memory() -> None:
 def test_summary_lines_with_memory() -> None:
     """Test that summary lines are generated correctly with memory stats."""
     result = DuplicateResult(
-        input_text="hello",
-        duplicates=["l"],
-        duration=0.0001,
-        memory_stats=(1024, 2048)
+        input_text="hello", duplicates=["l"], duration=0.0001, memory_stats=(1024, 2048)
     )
-    
+
     lines = result.get_summary_lines()
     assert len(lines) == 6  # Should have 6 lines with memory stats
     assert "Memory current usage" in lines[4]
