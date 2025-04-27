@@ -10,7 +10,6 @@ A playful CLI tool that detects repeated characters in strings and presents them
 - **Configurable Animation**: Adjust speed (`--fast`), height (`--height N`), or disable animation completely (`--no-animation`).
 - **Verbose Debugging**: Enable `--verbose` to see per-character count logs.
 - **Memory Profiling**: Use `--mem-profile` to display current and peak memory usage of the duplicate‑finding algorithm.
-- **Non‑Overlapping Layout**: Balloons are evenly spaced to avoid overlap.
 - **In‑Window Summary**: After animation, a summary of input, duplicates, time, and memory stats appears in the same terminal buffer.
 - **Static Type Checking**: Comprehensive type annotations with mypy validation.
 - **Code Quality Tools**: Integrated Black, isort, flake8, and pre-commit hooks.
@@ -149,7 +148,6 @@ python -m src.main --fast --height 20 --mem-profile -v --input-file inputs.txt
    - After animation, renders a summary in the same window.
 5. **Type Safety**:
    - Comprehensive type annotations throughout the codebase.
-   - Separate type stubs file (`main.pyi`) for enhanced IDE integration.
    - Strict mypy configuration enforcing type checking.
 6. **Code Quality**:
    - Black for consistent code formatting.
@@ -247,7 +245,6 @@ src/
 This project implements robust type safety using Python's type annotation system:
 
 - **Full Type Annotations**: All functions and methods are properly typed
-- **Type Stubs File**: Separate `.pyi` file provides enhanced type information
 - **Custom Type Aliases**: Specialized types like `CursesWindow` improve readability
 - **Mypy Configuration**: Strict settings in `mypy.ini` enforce type safety
 - **CI Integration**: Continuous type checking in GitHub Actions
