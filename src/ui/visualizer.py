@@ -6,7 +6,6 @@ different visualization strategies to be implemented.
 """
 
 from abc import ABC, abstractmethod
-from typing import List, Optional, Protocol, Tuple
 
 from src.core.result import DuplicateResult
 

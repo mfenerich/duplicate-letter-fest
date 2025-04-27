@@ -28,4 +28,4 @@ def test_type_error() -> None:
     Test that highlight_repeats_in_name raises TypeError for non-string inputs.
     """
     with pytest.raises(TypeError):
-        highlight_repeats_in_name(123)  # type: ignore
+        highlight_repeats_in_name(123)
