@@ -1,0 +1,12 @@
+[flake8]
+max-line-length = 100
+extend-ignore = E203, W503
+exclude = .git,__pycache__,docs/source/conf.py,old,build,dist,.venv
+per-file-ignores =
+    # imported but unused in __init__ files
+    __init__.py: F401
+    # Allow pytest fixtures to be unused in test files
+    test_*.py: F811, F401
+    # Exclude specific complex functions
+    main.py: C901
+max-complexity = 10

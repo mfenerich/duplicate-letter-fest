@@ -1,7 +1,7 @@
 # Duplicate Letter Fest
 
 ![CI](https://github.com/mfenerich/duplicate-letter-fest/actions/workflows/ci.yml/badge.svg)
-![Type Check](https://github.com/mfenerich/duplicate-letter-fest/actions/workflows/type-check.yml/badge.svg)
+![Code Quality](https://github.com/mfenerich/duplicate-letter-fest/actions/workflows/code-quality.yml/badge.svg)
 
 A playful CLI tool that detects repeated characters in strings and presents them with fun, flicker‑free ASCII balloon animations.
 
@@ -16,6 +16,7 @@ A playful CLI tool that detects repeated characters in strings and presents them
 - **Non‑Overlapping Layout**: Balloons are evenly spaced to avoid overlap.
 - **In‑Window Summary**: After animation, a summary of input, duplicates, time, and memory stats appears in the same terminal buffer.
 - **Static Type Checking**: Comprehensive type annotations with mypy validation.
+- **Code Quality Tools**: Integrated Black, isort, flake8, and pre-commit hooks.
 - **Automated Testing & CI**: Parameterized Pytest suite and GitHub Actions CI integration.
 
 ---
@@ -35,6 +36,11 @@ A playful CLI tool that detects repeated characters in strings and presents them
 3. Install dependencies:
    ```bash
    pip install -r requirements.txt
+   ```
+4. (Optional) Install pre-commit hooks:
+   ```bash
+   pip install pre-commit
+   pre-commit install
    ```
 
 ---
@@ -108,9 +114,14 @@ python main.py --fast --height 20 --mem-profile -v --input-file inputs.txt
    - Comprehensive type annotations throughout the codebase.
    - Separate type stubs file (`main.pyi`) for enhanced IDE integration.
    - Strict mypy configuration enforcing type checking.
-6. **Testing & CI**:
+6. **Code Quality**:
+   - Black for consistent code formatting.
+   - isort for organized imports.
+   - flake8 for code linting and style checking.
+   - pre-commit hooks to automate quality checks.
+7. **Testing & CI**:
    - Parameterized tests with `pytest.mark.parametrize` for coverage.
-   - CI pipeline includes both test execution and type checking.
+   - CI pipeline includes test execution, type checking, and code quality verification.
 
 ---
 
@@ -128,6 +139,63 @@ To run type checking locally:
 
 ```bash
 mypy main.py
+```
+
+Type annotations provide several benefits:
+- Catch type errors before runtime
+- Improved IDE integration with better autocompletion
+- Self-documenting code with clear interfaces
+- Enhanced maintainability for future contributors
+
+---
+
+## Code Quality Tools
+
+The project uses the following tools to ensure code quality:
+
+### Black
+
+The uncompromising code formatter that enforces consistent style.
+
+```bash
+# Format code
+black .
+
+# Check formatting without modifying
+black --check .
+```
+
+### isort
+
+Sorts imports alphabetically and automatically separated into sections.
+
+```bash
+# Sort imports
+isort .
+
+# Check import sorting
+isort --check .
+```
+
+### flake8
+
+Enforces style guide compliance and catches common errors.
+
+```bash
+# Lint code
+flake8 .
+```
+
+### pre-commit
+
+Runs quality checks before each commit to maintain high standards.
+
+```bash
+# Run on staged files
+pre-commit run
+
+# Run on all files
+pre-commit run --all-files
 ```
 
 ---
@@ -148,6 +216,10 @@ Make sure to activate your virtual environment before running tests.
 - Dependencies (see `requirements.txt`):
   - pytest
   - mypy
+  - black
+  - isort
+  - flake8
+  - pre-commit
 
 ---
 
